@@ -28,7 +28,7 @@ func crt() {
 	var i int16 = 0
 	for true {
 		print(i)
-		if i == 32 {
+		if i == 33 {
 			break
 		}
 	}
