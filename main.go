@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	"github.com/gin-gonic/gin"
 	"net/http"
 )
@@ -10,6 +11,14 @@ var db = make(map[string]string)
 func setupRouter() *gin.Engine {
 
 	r := gin.Default()
+
+	authorized := r.Group("/", gin.BasicAuth(gin.Accounts{
+		"foo":  "bar", // user:foo password:bar
+		"manu": "123", // user:manu password:123
+	}), gin.Bind(func(c *gin.Context) {
+		ip := c.ClientIP()
+		fmt.Print("request from ip %s", ip)
+	}))
 
 	r.GET("/ping", func(c *gin.Context) {
 		c.String(http.StatusOK, "pong")
@@ -24,11 +33,6 @@ func setupRouter() *gin.Engine {
 			c.JSON(http.StatusOK, gin.H{"user": user, "status": "no value"})
 		}
 	})
-
-	authorized := r.Group("/", gin.BasicAuth(gin.Accounts{
-		"foo":  "bar", // user:foo password:bar
-		"manu": "123", // user:manu password:123
-	}))
 
 	authorized.POST("admin", func(c *gin.Context) {
 		user := c.MustGet(gin.AuthUserKey).(string)
