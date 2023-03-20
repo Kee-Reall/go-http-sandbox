@@ -1,35 +1,52 @@
 package main
 
 import (
-	"fmt"
+	"github.com/gin-gonic/gin"
+	"net/http"
 )
 
-func main() {
-	var st int = 2
-	fmt.Println(st)
-	addTwo(&st)
-	fmt.Println(st)
-	crt()
-}
+var db = make(map[string]string)
 
-func addTwo(num *int) {
-	fmt.Println(num)
-	fmt.Println(&num)
-	*num = *num + 2
-	cursorPrint(&num)
-}
+func setupRouter() *gin.Engine {
 
-func cursorPrint(curs **int) {
-	fmt.Println(curs)
-	fmt.Println(&curs)
-}
+	r := gin.Default()
 
-func crt() {
-	var i int16 = 0
-	for true {
-		print(i)
-		if i == 33 {
-			break
+	r.GET("/ping", func(c *gin.Context) {
+		c.String(http.StatusOK, "pong")
+	})
+
+	r.GET("/user/:name", func(c *gin.Context) {
+		user := c.Params.ByName("name")
+		value, ok := db[user]
+		if ok {
+			c.JSON(http.StatusOK, gin.H{"user": user, "value": value})
+		} else {
+			c.JSON(http.StatusOK, gin.H{"user": user, "status": "no value"})
 		}
-	}
+	})
+
+	authorized := r.Group("/", gin.BasicAuth(gin.Accounts{
+		"foo":  "bar", // user:foo password:bar
+		"manu": "123", // user:manu password:123
+	}))
+
+	authorized.POST("admin", func(c *gin.Context) {
+		user := c.MustGet(gin.AuthUserKey).(string)
+
+		var json struct {
+			Value string `json:"value" binding:"required"`
+		}
+
+		if c.Bind(&json) == nil {
+			db[user] = json.Value
+			c.JSON(http.StatusOK, gin.H{"status": "ok"})
+		}
+	})
+
+	return r
+}
+
+func main() {
+	r := setupRouter()
+	r.Run(":8080")
 }
