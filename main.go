@@ -2,9 +2,16 @@ package main
 
 import (
 	"fmt"
+	"log"
 	"sandbox/five"
 )
 
 func main() {
-	fmt.Print(five.Five(4))
+	for i := 1; i < 10; i++ {
+		res, err := five.Five(4)
+		if err != nil {
+			log.Fatal(err)
+		}
+		fmt.Print(res)
+	}
 }
