@@ -13,6 +13,7 @@ func main() {
 			log.Fatal(err)
 		}
 		fmt.Print("jmmy")
+		fmt.Print("jmmy")
 		fmt.Print(res)
 	}
 }
