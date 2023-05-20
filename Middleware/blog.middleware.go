@@ -11,16 +11,17 @@ import (
 func BlogValidator(c *gin.Context) {
 	var dto blogEntity.BlogInput
 	if err := c.ShouldBindJSON(&dto); err != nil {
-		c.JSON(http.StatusBadRequest, errorResponse.NewException(err))
+		c.JSON(http.StatusBadRequest, errorResponse.New(err))
 		c.Abort()
 		return
 	}
 
 	validate := validator.New()
 	if err := validate.Struct(dto); err != nil {
-		c.JSON(http.StatusBadRequest, errorResponse.NewException(err))
+		c.JSON(http.StatusBadRequest, errorResponse.New(err))
 		c.Abort()
 		return
 	}
 	c.Next()
+	return
 }

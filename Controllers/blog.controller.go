@@ -15,7 +15,7 @@ func GetOne(c *gin.Context) {
 func Create(c *gin.Context) {
 	_, err := io.ReadAll(c.Request.Body)
 	if err != nil {
-		c.JSON(418, errorResponse.NewException(err))
+		c.JSON(418, errorResponse.New(err))
 	}
 	c.JSON(201, gin.H{
 		"response": "201",
