@@ -14,7 +14,7 @@ func BlogValidator(c *gin.Context) {
 		c.JSON(http.StatusBadRequest, errorResponse.New(err))
 		c.Abort()
 		return
-	}
+	} //todo add json Schema validator
 
 	validate := validator.New()
 	if err := validate.Struct(dto); err != nil {
