@@ -6,13 +6,16 @@ import (
 	"io"
 )
 
-func GetOne(c *gin.Context) {
+type BlogController struct {
+}
+
+func (b *BlogController) GetOne(c *gin.Context) {
 	c.JSON(200, gin.H{
 		"response": "200",
 	})
 }
 
-func Create(c *gin.Context) {
+func (b *BlogController) CreateBlog(c *gin.Context) {
 	_, err := io.ReadAll(c.Request.Body)
 	if err != nil {
 		c.JSON(418, errorResponse.New(err))
@@ -20,4 +23,8 @@ func Create(c *gin.Context) {
 	c.JSON(201, gin.H{
 		"response": "201",
 	})
+}
+
+func New() BlogController {
+	return BlogController{}
 }
