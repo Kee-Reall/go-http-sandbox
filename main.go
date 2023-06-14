@@ -8,7 +8,7 @@ import (
 
 func main() {
 	r := gin.Default()
-	var bgCtrl blogController.BlogController = blogController.New()
+	bgCtrl := blogController.New()
 	blogs := r.Group("/blogs")
 	{
 		blogs.GET("/")
