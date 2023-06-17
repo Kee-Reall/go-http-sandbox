@@ -11,9 +11,9 @@ func main() {
 	is := checkCmd(cmd)
 	var ableStr string
 	if is {
-		ableStr = "avaliable"
+		ableStr = "available"
 	} else {
-		ableStr = "not avaliable"
+		ableStr = "not available"
 	}
 	fmt.Printf("%s is %s", cmd, ableStr)
 }
