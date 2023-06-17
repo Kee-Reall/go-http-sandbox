@@ -8,12 +8,12 @@ import (
 
 func main() {
 	r := gin.Default()
-	bgCtrl := blogController.New()
+	blogCtrl := blogController.New()
 	blogs := r.Group("/blogs")
 	{
 		blogs.GET("/")
-		blogs.GET("/:id", bgCtrl.GetOne)
-		blogs.POST("/", blogMiddleware.BlogValidator, bgCtrl.CreateBlog)
+		blogs.GET("/:id", blogCtrl.GetOne)
+		blogs.POST("/", blogMiddleware.BlogValidator, blogCtrl.CreateBlog)
 		blogs.PUT("/:id")
 		blogs.DELETE("/:id")
 	}
