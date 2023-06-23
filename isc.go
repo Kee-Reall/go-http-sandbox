@@ -13,7 +13,7 @@ func main() {
 	if is {
 		ableStr = "available"
 	} else {
-		ableStr = "not available"
+		ableStr = "not available, at all"
 	}
 	fmt.Printf("%s is %s", cmd, ableStr)
 }
